@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+export FG_HOME="${FG_HOME:-$SNAP_USER_DATA/.fgfs}"
+
+exec "$SNAP/usr/bin/fgfs" --fg-root="$SNAP/fgdata" "$@"
