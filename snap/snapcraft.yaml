@@ -33,11 +33,6 @@ parts:
     source-type: tar
     organize:
       "*": fgdata/
-    override-prime: |
-      craftctl default
-      # The upstream data tarball carries odd mode bits on some scenery paths.
-      find "$CRAFT_PRIME/fgdata" -type d -exec chmod 0755 {} +
-      find "$CRAFT_PRIME/fgdata" -type f -exec chmod 0644 {} +
 
   simgear:
     plugin: cmake
@@ -148,3 +143,12 @@ parts:
     source: snap/local
     organize:
       launch-flightgear: bin/launch-flightgear
+
+  cleanup:
+    after: [fgdata, simgear, flightgear, launcher]
+    plugin: nil
+    override-prime: |
+      craftctl default
+      # Normalize upstream fgdata modes in the final merged prime tree.
+      find "$CRAFT_PRIME/fgdata" -type d -exec chmod 0755 {} +
+      find "$CRAFT_PRIME/fgdata" -type f -exec chmod 0644 {} +
