@@ -64,6 +64,11 @@ parts:
     after: [simgear]
     plugin: cmake
     source: https://gitlab.com/flightgear/flightgear/-/archive/2024.1.5/flightgear-2024.1.5.tar.bz2
+    override-pull: |
+      craftctl default
+      # GCC 13 rejects the mixed `abs(double)`/`std::max(..., 15.0)` call here.
+      sed -i 's/std::max(abs(latitude_deg), 15.0)/std::max(fabs(latitude_deg), 15.0)/' \
+        "$CRAFT_PART_SRC/src/Environment/climate.cxx"
     build-environment:
       # `fgrcc` is executed during the build and needs the staged SimGear libs.
       - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
