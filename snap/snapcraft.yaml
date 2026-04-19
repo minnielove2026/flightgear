@@ -150,5 +150,7 @@ parts:
     override-prime: |
       craftctl default
       # Normalize upstream fgdata modes in the final merged prime tree.
+      chmod -R g-s "$CRAFT_PRIME/fgdata"
+      chmod -R u+rwX,go+rX "$CRAFT_PRIME/fgdata"
       find "$CRAFT_PRIME/fgdata" -type d -exec chmod 0755 {} +
       find "$CRAFT_PRIME/fgdata" -type f -exec chmod 0644 {} +
