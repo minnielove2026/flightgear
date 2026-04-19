@@ -31,6 +31,12 @@ parts:
     plugin: dump
     source: https://mirrors.ibiblio.org/flightgear/ftp/release-2024.1/FlightGear-2024.1.5-data.txz
     source-type: tar
+    override-build: |
+      craftctl default
+      # The upstream data tarball carries unusual permission bits on some assets.
+      find "$CRAFT_PART_INSTALL" -perm /7000 -exec chmod ug-s,t {} +
+      find "$CRAFT_PART_INSTALL" -type d -exec chmod 755 {} +
+      find "$CRAFT_PART_INSTALL" -type f -exec chmod 644 {} +
     organize:
       "*": fgdata/
 
