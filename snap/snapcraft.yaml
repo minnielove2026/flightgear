@@ -64,6 +64,9 @@ parts:
     after: [simgear]
     plugin: cmake
     source: https://gitlab.com/flightgear/flightgear/-/archive/2024.1.5/flightgear-2024.1.5.tar.bz2
+    build-environment:
+      # `fgrcc` is executed during the build and needs the staged SimGear libs.
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     build-packages:
       - cmake
       - ninja-build
