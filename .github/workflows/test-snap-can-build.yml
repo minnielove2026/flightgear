@@ -19,9 +19,11 @@ jobs:
 
       - name: Install snap and run smoke test
         run: |
+          set -o pipefail
           sudo snap install --dangerous "${{ steps.build.outputs.snap }}"
-          snap run flightgear --version | tee flightgear-version.txt
-          snap run --shell flightgear -c 'test -d "$SNAP/fgdata" && test -x "$SNAP/usr/bin/fgfs"'
+          snap run flightgear --version 2>&1 | tee flightgear-version.txt
+          snap run --shell flightgear -c 'test -d "$SNAP/fgdata" && test -x "$SNAP/usr/bin/fgfs"' \
+            2>&1 | tee -a flightgear-version.txt
 
       - uses: diddlesnaps/snapcraft-review-action@v1
         with:
