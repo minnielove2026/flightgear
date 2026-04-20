@@ -1,10 +1,16 @@
 name: flightgear
+title: FlightGear
 base: core24
 version: "2024.1.5"
 summary: Open source flight simulator
 description: |
   FlightGear is a free, open source flight simulator with a wide range of
   aircraft, launch options, and scenery support.
+license: GPL-2.0-or-later
+website: https://www.flightgear.org/
+source-code: https://gitlab.com/flightgear/flightgear
+issues: https://gitlab.com/flightgear/flightgear/-/issues
+contact: https://www.flightgear.org/support
 grade: stable
 confinement: strict
 compression: lzo
@@ -107,6 +113,15 @@ parts:
       - libopenthreads21
       - libplib1t64
       - libpulse0
+      - libqt6core6t64
+      - libqt6dbus6t64
+      - libqt6gui6t64
+      - libqt6network6t64
+      - libqt6opengl6t64
+      - libqt6qml6
+      - libqt6qmlmodels6
+      - libqt6quick6
+      - libqt6widgets6t64
       - libsqlite3-0
       - libudev1
       - libx11-6
@@ -115,6 +130,7 @@ parts:
       - libxinerama1
       - libxrandr2
       - libxrender1
+      - libb2-1
       - zlib1g
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -131,6 +147,8 @@ parts:
     override-prime: |
       craftctl default
       sed -i 's|^Exec=.*|Exec=flightgear|g' "$CRAFT_PRIME/usr/share/applications/org.flightgear.FlightGear.desktop"
+      sed -i 's|^Icon=.*|Icon=${SNAP}/usr/share/icons/hicolor/128x128/apps/flightgear.png|g' \
+        "$CRAFT_PRIME/usr/share/applications/org.flightgear.FlightGear.desktop"
     prime:
       - -usr/include
       - -usr/lib/*/cmake

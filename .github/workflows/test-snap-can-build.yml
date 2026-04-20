@@ -12,10 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: snapcore/action-build@v1
         id: build
+
+      - name: Install snap and run smoke test
+        run: |
+          sudo snap install --dangerous "${{ steps.build.outputs.snap }}"
+          snap run flightgear --version | tee flightgear-version.txt
+          snap run --shell flightgear -c 'test -d "$SNAP/fgdata" && test -x "$SNAP/usr/bin/fgfs"'
 
       - uses: diddlesnaps/snapcraft-review-action@v1
         with:
@@ -24,3 +30,9 @@ jobs:
           # Plugs and Slots declarations to override default denial (requires store assertion to publish)
           # plugs: ./plug-declaration.json
           # slots: ./slot-declaration.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flightgear-smoke-test
+          path: flightgear-version.txt
