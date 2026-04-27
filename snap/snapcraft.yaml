@@ -153,6 +153,9 @@ parts:
       - -usr/include
       - -usr/lib/*/cmake
       - -usr/lib/*/pkgconfig
+      - -usr/lib/*/libproxy.so*
+      - -usr/lib/*/librsvg-2.so*
+      - -usr/lib/*/libgdk_pixbuf-2.0.so*
       - -usr/share/doc
       - -usr/share/man
 
