@@ -125,6 +125,7 @@ parts:
       - libsqlite3-0
       - libudev1
       - libx11-6
+      - libxcb-cursor0
       - libxext6
       - libxi6
       - libxinerama1
@@ -170,6 +171,11 @@ parts:
     plugin: nil
     override-prime: |
       craftctl default
+      # Prefer the GNOME extension's desktop stack over duplicate copies from
+      # FlightGear's own stage-packages to avoid mixed-runtime loader crashes.
+      rm -f "$CRAFT_PRIME"/usr/lib/*/libproxy.so*
+      rm -f "$CRAFT_PRIME"/usr/lib/*/librsvg-2.so*
+      rm -f "$CRAFT_PRIME"/usr/lib/*/libgdk_pixbuf-2.0.so*
       # Normalize upstream fgdata modes in the final merged prime tree.
       chmod -R g-s "$CRAFT_PRIME/fgdata"
       chmod -R u+rwX,go+rX "$CRAFT_PRIME/fgdata"
